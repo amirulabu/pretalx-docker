@@ -1,24 +1,24 @@
-version: '3'
+version: "3"
 services:
   pretalx:
     image: pretalx/standalone:latest
     container_name: pretalx
     restart: unless-stopped
-    depends_on: 
+    depends_on:
       - redis
       - db
     environment:
       PRETALX_FILESYSTEM_MEDIA: /public/media
       PRETALX_FILESYSTEM_STATIC: /public/static
     ports:
-      - "80:80"
-    volumes: 
+      - "28080:80"
+    volumes:
       - ./conf/pretalx.cfg:/etc/pretalx/pretalx.cfg:ro
       - pretalx-data:/data
       - pretalx-public:/public
     labels:
-       traefik.docker.network: "pretalxdocker"
-       traefik.enable: "true"
+      traefik.docker.network: "pretalxdocker"
+      traefik.enable: "true"
 
   db:
     image: mysql:latest
@@ -31,13 +31,18 @@ services:
       MYSQL_USER: pretalx
       MYSQL_PASSWORD: veryunsecureplschange
       MYSQL_RANDOM_ROOT_PASSWORD: "1"
-    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    command:
+      [
+        "mysqld",
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_unicode_ci",
+      ]
 
   redis:
     image: redis:latest
     container_name: pretalx-redis
     restart: unless-stopped
-    volumes: 
+    volumes:
       - pretalx-redis:/data
 
 volumes:
@@ -45,4 +50,3 @@ volumes:
   pretalx-data:
   pretalx-public:
   pretalx-redis:
-
