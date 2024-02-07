@@ -2,10 +2,10 @@ FROM python:3.10-bookworm
 
 RUN apt-get update && \
     apt-get install -y git gettext libmariadb-dev libpq-dev locales libmemcached-dev build-essential \
-            supervisor \
-            sudo \
-            locales \
-            --no-install-recommends && \
+    supervisor \
+    sudo \
+    locales \
+    --no-install-recommends && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     dpkg-reconfigure locales && \
@@ -44,7 +44,8 @@ RUN apt-get update && \
 RUN chmod +x /usr/local/bin/pretalx && \
     cd /pretalx/src && \
     rm -f pretalx.cfg && \
-    chown -R pretalxuser:pretalxuser /pretalx /data /public && \
+    chown -R pretalxuser:pretalxuser /pretalx && \
+    chown -R pretalxuser:pretalxuser /data /public && \
     rm -f /pretalx/src/data/.secret
 
 USER pretalxuser
